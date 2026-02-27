@@ -1,8 +1,7 @@
 import type { Timeframe, Currency, StockQuote } from './types';
 
 // API configuration
-export const TWELVE_DATA_BASE_URL = 'https://api.twelvedata.com';
-export const TWELVE_DATA_WS_URL = 'wss://ws.twelvedata.com/v1/quotes/price';
+export const FINNHUB_BASE_URL = 'https://finnhub.io';
 export const ALPHA_VANTAGE_BASE_URL = 'https://www.alphavantage.co/query';
 export const ALPACA_DATA_BASE_URL = 'https://data.alpaca.markets/v2';
 export const METALS_DEV_BASE_URL = 'https://api.metals.dev/v1';
@@ -65,10 +64,8 @@ export const CACHE_DAILY = 60 * 60 * 1000; // 1 hour
 export const CACHE_STOCKS_MARKET_HOURS = 5 * 60 * 1000; // 5 min
 export const CACHE_STOCKS_AFTER_HOURS = 60 * 60 * 1000; // 1 hour
 
-// WebSocket reconnect config
-export const WS_RECONNECT_DELAY = 3000;
-export const WS_MAX_RECONNECT_ATTEMPTS = 10;
-export const WS_HEARTBEAT_INTERVAL = 30000;
+// Polling config (replaces WebSocket)
+export const POLL_INTERVAL_MS = 2000;
 
 // Design tokens
 export const COLORS = {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getTimeSeries } from '@/lib/api/twelve-data';
+import { getTimeSeries } from '@/lib/api/finnhub';
 import { computeSMA } from '@/lib/indicators/sma';
 import { computeEMA } from '@/lib/indicators/ema';
 import { computeRSI } from '@/lib/indicators/rsi';

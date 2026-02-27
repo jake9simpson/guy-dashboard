@@ -1,9 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { usePriceStore } from '@/stores/price-store';
-import { useWebSocket } from './use-websocket';
-import { GOLD_SYMBOL, SILVER_SYMBOL } from '@/lib/constants';
+import { GOLD_SYMBOL, SILVER_SYMBOL, POLL_INTERVAL_MS } from '@/lib/constants';
 import type { TwelveDataQuote } from '@/lib/types';
 
 async function fetchQuote(symbol: string): Promise<TwelveDataQuote> {
@@ -12,53 +11,70 @@ async function fetchQuote(symbol: string): Promise<TwelveDataQuote> {
   return res.json();
 }
 
+function applyQuote(
+  q: TwelveDataQuote,
+  symbol: string,
+  update: (price: Partial<import('@/lib/types').Price>) => void
+) {
+  update({
+    symbol,
+    price: parseFloat(q.close),
+    change: parseFloat(q.change),
+    changePercent: parseFloat(q.percent_change),
+    high: parseFloat(q.high),
+    low: parseFloat(q.low),
+    open: parseFloat(q.open),
+    previousClose: parseFloat(q.previous_close),
+    timestamp: Date.now(),
+  });
+}
+
 export function useLivePrice() {
-  const { connected } = useWebSocket();
   const gold = usePriceStore((s) => s.gold);
   const silver = usePriceStore((s) => s.silver);
   const ratio = usePriceStore((s) => s.ratio);
+  const connected = usePriceStore((s) => s.connected);
   const updateGold = usePriceStore((s) => s.updateGold);
   const updateSilver = usePriceStore((s) => s.updateSilver);
+  const setConnected = usePriceStore((s) => s.setConnected);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Fetch initial REST quotes on mount
   useEffect(() => {
-    async function loadInitialPrices() {
-      // Fetch independently so one failure doesn't block the other
-      fetchQuote(GOLD_SYMBOL)
-        .then((q) => {
-          updateGold({
-            symbol: GOLD_SYMBOL,
-            price: parseFloat(q.close),
-            change: parseFloat(q.change),
-            changePercent: parseFloat(q.percent_change),
-            high: parseFloat(q.high),
-            low: parseFloat(q.low),
-            open: parseFloat(q.open),
-            previousClose: parseFloat(q.previous_close),
-            timestamp: Date.now(),
-          });
-        })
-        .catch((err) => console.error('Failed to fetch gold price:', err));
+    let cancelled = false;
 
-      fetchQuote(SILVER_SYMBOL)
-        .then((q) => {
-          updateSilver({
-            symbol: SILVER_SYMBOL,
-            price: parseFloat(q.close),
-            change: parseFloat(q.change),
-            changePercent: parseFloat(q.percent_change),
-            high: parseFloat(q.high),
-            low: parseFloat(q.low),
-            open: parseFloat(q.open),
-            previousClose: parseFloat(q.previous_close),
-            timestamp: Date.now(),
-          });
-        })
-        .catch((err) => console.error('Failed to fetch silver price:', err));
+    async function poll() {
+      try {
+        const [goldQ, silverQ] = await Promise.allSettled([
+          fetchQuote(GOLD_SYMBOL),
+          fetchQuote(SILVER_SYMBOL),
+        ]);
+
+        if (cancelled) return;
+
+        if (goldQ.status === 'fulfilled') applyQuote(goldQ.value, GOLD_SYMBOL, updateGold);
+        if (silverQ.status === 'fulfilled') applyQuote(silverQ.value, SILVER_SYMBOL, updateSilver);
+
+        if (!cancelled) setConnected(true);
+      } catch {
+        if (!cancelled) setConnected(false);
+      }
     }
 
-    loadInitialPrices();
-  }, [updateGold, updateSilver]);
+    // Initial fetch
+    poll();
+
+    // Start polling
+    intervalRef.current = setInterval(poll, POLL_INTERVAL_MS);
+
+    return () => {
+      cancelled = true;
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      setConnected(false);
+    };
+  }, [updateGold, updateSilver, setConnected]);
 
   return { gold, silver, ratio, connected };
 }

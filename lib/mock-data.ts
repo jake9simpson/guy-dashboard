@@ -93,7 +93,7 @@ export const MOCK_MINING_STOCKS: StockQuote[] = [
 ];
 
 export function isDemoMode(): boolean {
-  const key = process.env.TWELVE_DATA_API_KEY;
+  const key = process.env.FINNHUB_API_KEY;
   return !key || key === 'your_key_here';
 }
 

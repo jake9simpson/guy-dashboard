@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getQuote } from '@/lib/api/twelve-data';
+import { getQuote } from '@/lib/api/finnhub';
 import { isDemoMode, MOCK_GOLD_QUOTE, MOCK_SILVER_QUOTE } from '@/lib/mock-data';
 
 export async function GET(request: NextRequest) {
@@ -19,14 +19,10 @@ export async function GET(request: NextRequest) {
     const data = await getQuote(symbol);
     return NextResponse.json(data, {
       headers: {
-        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120',
+        'Cache-Control': 'public, s-maxage=5, stale-while-revalidate=10',
       },
     });
   } catch (err) {
-    // Silver (XAG/USD) requires a paid Twelve Data plan — fall back to mock
-    if (symbol.includes('XAG')) {
-      return NextResponse.json(MOCK_SILVER_QUOTE);
-    }
     const message = err instanceof Error ? err.message : 'Failed to fetch quote';
     return NextResponse.json({ error: message }, { status: 502 });
   }
