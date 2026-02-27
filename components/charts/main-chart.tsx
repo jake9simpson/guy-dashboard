@@ -173,7 +173,14 @@ export function MainChart({
       }
     }
 
-    chart.timeScale().fitContent();
+    // Default view: last ~1 year with a bit of right padding, scrollable to full history
+    const now = new Date();
+    const oneYearAgo = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
+    const pad = new Date(now.getTime() + 7 * 86400000); // 1 week right padding
+    chart.timeScale().setVisibleRange({
+      from: oneYearAgo.toISOString().split('T')[0],
+      to: pad.toISOString().split('T')[0],
+    });
   }, [chartType, candlestickData, lineData, overlayLines]);
 
   return (

@@ -16,7 +16,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'The Guy Report — Precious Metals Intelligence',
+  title: 'The Guy Report',
   description:
     'Live gold and silver prices, technical analysis, mining stocks, and market intelligence.',
   icons: {
