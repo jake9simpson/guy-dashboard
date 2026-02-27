@@ -9,7 +9,7 @@ export function Footer() {
             The Guy Report
           </p>
           <p className="text-xs text-text-muted text-center">
-            Market data provided by Twelve Data and Alpha Vantage. Prices may be delayed.
+            Market data provided by Yahoo Finance and Alpaca. Prices may be delayed.
           </p>
         </div>
       </div>

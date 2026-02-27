@@ -24,11 +24,11 @@ interface RatioChartProps {
 
 function getRatioContext(current: number, average: number): string {
   const diff = ((current - average) / average) * 100;
-  if (diff > 15) return `well above the historical average of ${average.toFixed(1)}`;
-  if (diff > 5) return `above the historical average of ${average.toFixed(1)}`;
-  if (diff < -15) return `well below the historical average of ${average.toFixed(1)}`;
-  if (diff < -5) return `below the historical average of ${average.toFixed(1)}`;
-  return `near the historical average of ${average.toFixed(1)}`;
+  if (diff > 15) return 'well above';
+  if (diff > 5) return 'above';
+  if (diff < -15) return 'well below';
+  if (diff < -5) return 'below';
+  return 'near';
 }
 
 export function RatioChart({
@@ -38,22 +38,34 @@ export function RatioChart({
   height = 300,
   className,
 }: RatioChartProps) {
-  const contextText = getRatioContext(currentRatio, historicalAverage);
+  const context = getRatioContext(currentRatio, historicalAverage);
 
   return (
     <div className={cn('rounded-lg border border-border bg-surface p-4', className)}>
-      <div className="mb-4 flex items-baseline justify-between">
+      <div className="mb-4 flex flex-col sm:flex-row sm:items-start justify-between gap-3">
         <div>
           <h3 className="text-sm font-semibold text-text-primary">Gold/Silver Ratio</h3>
-          <p className="mt-0.5 text-xs text-text-muted">
-            Currently at {currentRatio.toFixed(1)} &mdash; {contextText}
+          <p className="mt-1 text-xs text-text-muted">
+            It takes <span className="font-semibold text-text-secondary">{currentRatio.toFixed(1)}</span> ounces
+            of silver to buy 1 ounce of gold
           </p>
         </div>
-        <div className="text-right">
-          <span className="font-mono text-2xl font-bold text-text-primary">
+        <div className="text-left sm:text-right flex-shrink-0">
+          <span className="font-mono text-3xl font-bold text-text-primary">
             {currentRatio.toFixed(1)}
           </span>
-          <span className="ml-1 text-xs text-text-muted">oz Ag / oz Au</span>
+          <div className="mt-0.5 flex items-center gap-1.5 sm:justify-end">
+            <span className={cn(
+              'inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase',
+              context === 'well above' || context === 'above'
+                ? 'bg-amber-50 text-amber-700'
+                : context === 'well below' || context === 'below'
+                  ? 'bg-blue-50 text-blue-700'
+                  : 'bg-gray-100 text-gray-600'
+            )}>
+              {context} avg ({historicalAverage})
+            </span>
+          </div>
         </div>
       </div>
 
@@ -86,6 +98,19 @@ export function RatioChart({
               fontSize: 12,
             }}
             formatter={(value: number | undefined) => [(value ?? 0).toFixed(2), 'Ratio']}
+          />
+          <ReferenceLine
+            y={currentRatio}
+            stroke={COLORS.text.primary}
+            strokeWidth={1.5}
+            strokeDasharray="4 2"
+            label={{
+              value: `Current ${currentRatio.toFixed(1)}`,
+              position: 'left',
+              fill: COLORS.text.primary,
+              fontSize: 10,
+              fontWeight: 600,
+            }}
           />
           {historicalAverage && (
             <ReferenceLine

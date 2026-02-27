@@ -158,7 +158,7 @@ export interface MovingAverageSignal {
 // Chart configuration
 export type ChartType = 'candlestick' | 'line' | 'area';
 export type MetalSymbol = 'XAU/USD' | 'XAG/USD';
-export type ChartView = 'gold' | 'silver' | 'ratio' | 'overlay';
+export type ChartView = 'gold' | 'silver' | 'ratio';
 
 export interface Timeframe {
   label: string;

@@ -7,7 +7,6 @@ import { LivePriceCard } from '@/components/prices/live-price-card';
 import { UnitConverter } from '@/components/common/unit-converter';
 import { MainChart } from '@/components/charts/main-chart';
 import { ChartControls } from '@/components/charts/chart-controls';
-import { TAIndicatorPanel } from '@/components/charts/ta-indicator-panel';
 import { RatioChart } from '@/components/charts/ratio-chart';
 import { TADashboard } from '@/components/analysis/ta-dashboard';
 import { MovingAveragesTable } from '@/components/analysis/moving-averages-table';
@@ -17,11 +16,10 @@ import { MinersGrid } from '@/components/stocks/miners-grid';
 import { useLivePrice } from '@/hooks/use-live-price';
 import { useHistoricalData } from '@/hooks/use-historical-data';
 import { useTechnicalIndicators } from '@/hooks/use-technical-indicators';
-import { TIMEFRAMES, GOLD_SYMBOL, SILVER_SYMBOL, SMA_PERIODS } from '@/lib/constants';
+import { GOLD_SYMBOL, SILVER_SYMBOL, SMA_PERIODS } from '@/lib/constants';
 import type {
   ChartType,
   ChartView,
-  Timeframe,
   CandlestickData,
   LineData,
   MovingAverageSignal,
@@ -31,18 +29,18 @@ import type {
 export default function Dashboard() {
   const { gold, silver, ratio } = useLivePrice();
 
-  // Chart state
-  const [timeframe, setTimeframe] = useState<Timeframe>(TIMEFRAMES[3]); // 3M default
+  // Chart state — hardcoded to ALL timeframe (monthly bars, full history)
   const [chartView, setChartView] = useState<ChartView>('gold');
   const [chartType, setChartType] = useState<ChartType>('candlestick');
   const [activeOverlays, setActiveOverlays] = useState<string[]>([]);
 
-  // Determine which symbol to fetch based on chart view
-  const activeSymbol = chartView === 'silver' ? SILVER_SYMBOL : GOLD_SYMBOL;
+  // Fetch ALL-time data for charts (monthly bars)
+  const { data: goldData, isLoading: goldLoading } = useHistoricalData(GOLD_SYMBOL, 'all');
+  const { data: silverData, isLoading: silverLoading } = useHistoricalData(SILVER_SYMBOL, 'all');
 
-  // Fetch historical data for both metals
-  const { data: goldData, isLoading: goldLoading } = useHistoricalData(GOLD_SYMBOL, timeframe.value);
-  const { data: silverData, isLoading: silverLoading } = useHistoricalData(SILVER_SYMBOL, timeframe.value);
+  // Fetch 1Y daily data for accurate performance metrics and 52-week stats
+  const { data: goldYearData } = useHistoricalData(GOLD_SYMBOL, '1year');
+  const { data: silverYearData } = useHistoricalData(SILVER_SYMBOL, '1year');
 
   // Active data based on chart view
   const activeData = chartView === 'silver' ? silverData : goldData;
@@ -103,15 +101,6 @@ export default function Dashboard() {
     }));
   }, [goldData, silverData]);
 
-  // Build volume data for TA panel
-  const volumeData = useMemo(() => {
-    if (!activeData) return undefined;
-    return activeData.map((d) => ({
-      time: new Date(d.time * 1000).toISOString().split('T')[0],
-      volume: d.volume,
-    }));
-  }, [activeData]);
-
   // Build MA signals
   const maSignals: MovingAverageSignal[] = useMemo(() => {
     if (!activeIndicators || !activeData?.length) return [];
@@ -144,30 +133,34 @@ export default function Dashboard() {
     return result;
   }, [activeData]);
 
-  // Performance metrics (placeholder — computed from available data)
+  // Performance metrics computed from 1Y daily data for accuracy
   const performanceMetrics: PerformanceMetric[] = useMemo(() => {
-    if (!goldData?.length || !silverData?.length) return [];
-    const calcReturn = (data: typeof goldData, periods: number) => {
-      if (data.length < periods) return 0;
-      const start = data[data.length - periods].close;
+    if (!goldYearData?.length || !silverYearData?.length) return [];
+
+    const calcReturn = (data: typeof goldYearData, periods: number) => {
+      if (data.length < periods + 1) return 0;
+      const start = data[data.length - 1 - periods].close;
       const end = data[data.length - 1].close;
       return start > 0 ? ((end - start) / start) * 100 : 0;
     };
 
-    const periods = [
-      { period: '1D Change', count: 1 },
-      { period: '1W Change', count: 5 },
-      { period: '1M Change', count: 22 },
-      { period: 'YTD', count: Math.min(goldData.length, 60) },
-      { period: '1Y Change', count: Math.min(goldData.length, 252) },
-    ];
+    const calcYtdReturn = (data: typeof goldYearData) => {
+      const now = new Date();
+      const ytdTimestamp = new Date(now.getFullYear(), 0, 1).getTime() / 1000;
+      const ytdBar = data.find((d) => d.time >= ytdTimestamp);
+      if (!ytdBar) return 0;
+      const end = data[data.length - 1].close;
+      return ytdBar.close > 0 ? ((end - ytdBar.close) / ytdBar.close) * 100 : 0;
+    };
 
-    return periods.map(({ period, count }) => ({
-      period,
-      gold: calcReturn(goldData, count),
-      silver: calcReturn(silverData, count),
-    }));
-  }, [goldData, silverData]);
+    return [
+      { period: '1D Change', gold: calcReturn(goldYearData, 1), silver: calcReturn(silverYearData, 1) },
+      { period: '1W Change', gold: calcReturn(goldYearData, 5), silver: calcReturn(silverYearData, 5) },
+      { period: '1M Change', gold: calcReturn(goldYearData, 22), silver: calcReturn(silverYearData, 22) },
+      { period: 'YTD', gold: calcYtdReturn(goldYearData), silver: calcYtdReturn(silverYearData) },
+      { period: '1Y Change', gold: calcReturn(goldYearData, Math.min(goldYearData.length - 1, 252)), silver: calcReturn(silverYearData, Math.min(silverYearData.length - 1, 252)) },
+    ];
+  }, [goldYearData, silverYearData]);
 
   const currentPrice = activeData?.length
     ? activeData[activeData.length - 1].close
@@ -189,8 +182,6 @@ export default function Dashboard() {
         {/* Chart Controls */}
         <section className="mb-4">
           <ChartControls
-            timeframe={timeframe}
-            onTimeframeChange={setTimeframe}
             chartView={chartView}
             onChartViewChange={setChartView}
             chartType={chartType}
@@ -201,7 +192,7 @@ export default function Dashboard() {
         </section>
 
         {/* Main Chart */}
-        <section className="mb-2">
+        <section className="mb-8">
           {isChartLoading ? (
             <div className="h-[500px] w-full rounded-lg border border-border bg-surface animate-pulse flex items-center justify-center">
               <p className="text-text-muted text-sm">Loading chart data...</p>
@@ -222,17 +213,6 @@ export default function Dashboard() {
             />
           )}
         </section>
-
-        {/* TA Indicator Panels (RSI, MACD, Volume) */}
-        {activeIndicators && (
-          <section className="mb-8">
-            <TAIndicatorPanel
-              rsiData={activeIndicators.rsi}
-              macdData={activeIndicators.macd}
-              volumeData={volumeData}
-            />
-          </section>
-        )}
 
         {/* Technical Analysis Dashboard */}
         {activeIndicators && (
@@ -275,10 +255,10 @@ export default function Dashboard() {
           {performanceMetrics.length > 0 && (
             <PerformanceTable
               metrics={performanceMetrics}
-              goldHigh52w={goldData?.length ? Math.max(...goldData.map((d) => d.high)) : undefined}
-              goldLow52w={goldData?.length ? Math.min(...goldData.map((d) => d.low)) : undefined}
-              silverHigh52w={silverData?.length ? Math.max(...silverData.map((d) => d.high)) : undefined}
-              silverLow52w={silverData?.length ? Math.min(...silverData.map((d) => d.low)) : undefined}
+              goldHigh52w={goldYearData?.length ? Math.max(...goldYearData.map((d) => d.high)) : undefined}
+              goldLow52w={goldYearData?.length ? Math.min(...goldYearData.map((d) => d.low)) : undefined}
+              silverHigh52w={silverYearData?.length ? Math.max(...silverYearData.map((d) => d.high)) : undefined}
+              silverLow52w={silverYearData?.length ? Math.min(...silverYearData.map((d) => d.low)) : undefined}
             />
           )}
 

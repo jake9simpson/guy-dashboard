@@ -2,8 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { BarChart3, TrendingUp, Waves, ChevronDown } from 'lucide-react';
-import { TIMEFRAMES, SMA_PERIODS, EMA_PERIODS } from '@/lib/constants';
-import type { ChartType, ChartView, Timeframe } from '@/lib/types';
+import { SMA_PERIODS, EMA_PERIODS } from '@/lib/constants';
+import type { ChartType, ChartView } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
 interface TAOverlayOption {
@@ -20,8 +20,6 @@ const TA_OPTIONS: TAOverlayOption[] = [
 ];
 
 interface ChartControlsProps {
-  timeframe: Timeframe;
-  onTimeframeChange: (tf: Timeframe) => void;
   chartView: ChartView;
   onChartViewChange: (view: ChartView) => void;
   chartType: ChartType;
@@ -41,12 +39,9 @@ const CHART_VIEWS: { value: ChartView; label: string }[] = [
   { value: 'gold', label: 'Gold' },
   { value: 'silver', label: 'Silver' },
   { value: 'ratio', label: 'Ratio' },
-  { value: 'overlay', label: 'Overlay' },
 ];
 
 export function ChartControls({
-  timeframe,
-  onTimeframeChange,
   chartView,
   onChartViewChange,
   chartType,
@@ -78,24 +73,6 @@ export function ChartControls({
 
   return (
     <div className={cn('flex flex-wrap items-center gap-3', className)}>
-      {/* Timeframe pills */}
-      <div className="flex items-center gap-1 rounded-lg bg-surface-elevated p-1">
-        {TIMEFRAMES.map((tf) => (
-          <button
-            key={tf.value}
-            onClick={() => onTimeframeChange(tf)}
-            className={cn(
-              'rounded-md px-2.5 py-1 text-xs font-medium transition-colors',
-              timeframe.value === tf.value
-                ? 'bg-gold-primary text-white shadow-sm'
-                : 'text-text-secondary hover:text-text-primary hover:bg-surface'
-            )}
-          >
-            {tf.label}
-          </button>
-        ))}
-      </div>
-
       {/* Metal selector */}
       <div className="flex items-center gap-1 rounded-lg bg-surface-elevated p-1">
         {CHART_VIEWS.map((view) => (
