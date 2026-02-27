@@ -60,12 +60,12 @@ export default function Dashboard() {
     return [
       {
         data: sma20w.values.map((v) => ({ time: v.time.slice(0, 10), value: v.value })),
-        color: '#2563EB',
+        color: 'rgba(100, 130, 160, 0.6)',
         title: '20w SMA',
       },
       {
         data: ema21w.values.map((v) => ({ time: v.time.slice(0, 10), value: v.value })),
-        color: '#9333EA',
+        color: 'rgba(80, 160, 120, 0.6)',
         title: '21w EMA',
       },
     ];

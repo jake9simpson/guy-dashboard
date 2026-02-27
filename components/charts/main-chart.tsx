@@ -162,9 +162,9 @@ export function MainChart({
       for (const overlay of overlayLines) {
         const series = chart.addSeries(LineSeries, {
           color: overlay.color,
-          lineWidth: 2,
+          lineWidth: 1,
           lineStyle: LineStyle.Dashed,
-          crosshairMarkerRadius: 3,
+          crosshairMarkerRadius: 2,
           crosshairMarkerBackgroundColor: overlay.color,
           title: overlay.title,
         });
