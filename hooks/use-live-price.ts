@@ -3,16 +3,16 @@
 import { useEffect, useRef } from 'react';
 import { usePriceStore } from '@/stores/price-store';
 import { GOLD_SYMBOL, SILVER_SYMBOL, POLL_INTERVAL_MS } from '@/lib/constants';
-import type { TwelveDataQuote } from '@/lib/types';
+import type { Quote } from '@/lib/types';
 
-async function fetchQuote(symbol: string): Promise<TwelveDataQuote> {
+async function fetchQuote(symbol: string): Promise<Quote> {
   const res = await fetch(`/api/metals/quote?symbol=${encodeURIComponent(symbol)}`);
   if (!res.ok) throw new Error(`Quote fetch failed: ${res.status}`);
   return res.json();
 }
 
 function applyQuote(
-  q: TwelveDataQuote,
+  q: Quote,
   symbol: string,
   update: (price: Partial<import('@/lib/types').Price>) => void
 ) {

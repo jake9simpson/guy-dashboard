@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { TIMEFRAMES } from '@/lib/constants';
 import { getTimeframeStaleTime } from '@/lib/utils';
-import type { OHLCV, TwelveDataTimeSeries } from '@/lib/types';
+import type { OHLCV, TimeSeries } from '@/lib/types';
 
 async function fetchHistoricalData(
   symbol: string,
@@ -21,7 +21,7 @@ async function fetchHistoricalData(
   const res = await fetch(`/api/metals/historical?${params}`);
   if (!res.ok) throw new Error(`Historical data fetch failed: ${res.status}`);
 
-  const data: TwelveDataTimeSeries = await res.json();
+  const data: TimeSeries = await res.json();
 
   if (!data.values || data.values.length === 0) {
     return [];

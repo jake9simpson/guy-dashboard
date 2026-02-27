@@ -1,5 +1,5 @@
 import { getCached, setCache } from '@/lib/cache';
-import type { TwelveDataTimeSeries, TwelveDataQuote } from '@/lib/types';
+import type { TimeSeries, Quote } from '@/lib/types';
 
 const YAHOO_BASE = 'https://query1.finance.yahoo.com/v8/finance/chart';
 
@@ -65,9 +65,9 @@ async function fetchYahoo(yahooSymbol: string, interval: string, range: string):
   return result as YahooChartResult;
 }
 
-export async function getQuote(symbol: string): Promise<TwelveDataQuote> {
+export async function getQuote(symbol: string): Promise<Quote> {
   const cacheKey = `quote:${symbol}`;
-  const cached = getCached<TwelveDataQuote>(cacheKey);
+  const cached = getCached<Quote>(cacheKey);
   if (cached) return cached;
 
   const yahooSymbol = mapSymbol(symbol);
@@ -89,7 +89,7 @@ export async function getQuote(symbol: string): Promise<TwelveDataQuote> {
   const change = close - previousClose;
   const percentChange = previousClose > 0 ? (change / previousClose) * 100 : 0;
 
-  const result: TwelveDataQuote = {
+  const result: Quote = {
     symbol,
     name: symbol === 'XAU/USD' ? 'Gold Spot' : symbol === 'XAG/USD' ? 'Silver Spot' : symbol,
     exchange: 'COMEX',
@@ -113,9 +113,9 @@ export async function getTimeSeries(
   interval: string,
   outputsize: number,
   timeframeValue: string = ''
-): Promise<TwelveDataTimeSeries> {
+): Promise<TimeSeries> {
   const cacheKey = `ts:${symbol}:${timeframeValue || interval}`;
-  const cached = getCached<TwelveDataTimeSeries>(cacheKey);
+  const cached = getCached<TimeSeries>(cacheKey);
   if (cached) return cached;
 
   const yahooSymbol = mapSymbol(symbol);
@@ -146,7 +146,7 @@ export async function getTimeSeries(
     .filter((v): v is NonNullable<typeof v> => v !== null);
 
   const base = symbol.split('/')[0];
-  const result: TwelveDataTimeSeries = {
+  const result: TimeSeries = {
     meta: { symbol, interval, currency_base: base, currency_quote: 'USD', type: 'Physical Currency' },
     values,
     status: 'ok',

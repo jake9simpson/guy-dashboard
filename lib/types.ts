@@ -50,7 +50,7 @@ export interface WebSocketSubscription {
 }
 
 // API response types
-export interface TwelveDataTimeSeries {
+export interface TimeSeries {
   meta: {
     symbol: string;
     interval: string;
@@ -69,7 +69,7 @@ export interface TwelveDataTimeSeries {
   status: string;
 }
 
-export interface TwelveDataQuote {
+export interface Quote {
   symbol: string;
   name: string;
   exchange: string;
@@ -82,21 +82,6 @@ export interface TwelveDataQuote {
   previous_close: string;
   change: string;
   percent_change: string;
-}
-
-export interface AlphaVantageQuote {
-  'Global Quote': {
-    '01. symbol': string;
-    '02. open': string;
-    '03. high': string;
-    '04. low': string;
-    '05. price': string;
-    '06. volume': string;
-    '07. latest trading day': string;
-    '08. previous close': string;
-    '09. change': string;
-    '10. change percent': string;
-  };
 }
 
 export interface StockQuote {
@@ -178,7 +163,7 @@ export type ChartView = 'gold' | 'silver' | 'ratio' | 'overlay';
 export interface Timeframe {
   label: string;
   value: string;
-  interval: string; // Twelve Data interval
+  interval: string;
   outputsize: number;
 }
 
