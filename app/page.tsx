@@ -193,6 +193,13 @@ export default function Dashboard() {
           <LivePriceCard metal="silver" />
         </section>
 
+        {/* Welcome / How to use */}
+        <section className="mb-6 rounded-lg border border-border bg-surface px-5 py-4">
+          <p className="text-sm text-text-secondary leading-relaxed">
+            Hey Guy, I made this dashboard for both of us to track gold and silver prices. Use the <strong>Gold</strong> and <strong>Silver</strong> buttons to switch between metals and see the technical analysis below. Hit <strong>Ratio</strong> for the gold/silver ratio. You can pick between candlestick, line, or area chart styles. The <strong>BMSB</strong> button toggles the Bull Market Support Band, which plots the 20-week SMA and 21-week EMA. You can scroll the chart all the way back to 2000.
+          </p>
+        </section>
+
         {/* Chart Controls */}
         <section className="mb-4">
           <ChartControls
