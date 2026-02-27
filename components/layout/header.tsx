@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { formatDate } from '@/lib/utils';
 import { MarketStatus } from '@/components/common/market-status';
-import { CurrencySelector } from '@/components/layout/currency-selector';
 
 export function Header() {
   const [date, setDate] = useState('');
@@ -27,10 +26,9 @@ export function Header() {
             </p>
           </div>
 
-          {/* Right: Market status and currency selector */}
+          {/* Right: Market status */}
           <div className="flex items-center gap-4">
             <MarketStatus className="hidden sm:flex" />
-            <CurrencySelector />
           </div>
         </div>
       </div>

@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
   const symbol = searchParams.get('symbol');
   const interval = searchParams.get('interval') ?? '1day';
   const outputsize = searchParams.get('outputsize') ?? '100';
+  const timeframe = searchParams.get('timeframe') ?? '';
 
   if (!symbol) {
     return NextResponse.json({ error: 'Missing required parameter: symbol' }, { status: 400 });
@@ -39,7 +40,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const data = await getTimeSeries(symbol, interval, parseInt(outputsize, 10));
+    const data = await getTimeSeries(symbol, interval, parseInt(outputsize, 10), timeframe);
     return NextResponse.json(data, {
       headers: {
         'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',

@@ -182,16 +182,12 @@ export interface Timeframe {
   outputsize: number;
 }
 
-export type Currency = 'USD' | 'EUR' | 'GBP' | 'CAD' | 'AUD';
-
 // Price store types
 export interface PriceState {
   gold: Price | null;
   silver: Price | null;
   ratio: number | null;
   connected: boolean;
-  currency: Currency;
-  setCurrency: (currency: Currency) => void;
   updateGold: (price: Partial<Price>) => void;
   updateSilver: (price: Partial<Price>) => void;
   setConnected: (connected: boolean) => void;

@@ -42,7 +42,6 @@ export function MinerCard({ stock, sparklineData, className }: MinerCardProps) {
         <PriceChange
           value={stock.change}
           percentChange={stock.changePercent}
-          currencySymbol="$"
           size="sm"
         />
       </div>

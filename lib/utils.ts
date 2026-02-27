@@ -1,7 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { TROY_OZ_TO_GRAMS, CURRENCIES } from './constants';
-import type { Currency } from './types';
+import { TROY_OZ_TO_GRAMS } from './constants';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -12,16 +11,6 @@ export function formatPrice(price: number, decimals: number = 2): string {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
   });
-}
-
-export function formatCurrency(
-  price: number,
-  currency: Currency = 'USD',
-  decimals: number = 2
-): string {
-  const currencyInfo = CURRENCIES.find((c) => c.value === currency);
-  const symbol = currencyInfo?.symbol ?? '$';
-  return `${symbol}${formatPrice(price, decimals)}`;
 }
 
 export function formatPercent(value: number, decimals: number = 2): string {

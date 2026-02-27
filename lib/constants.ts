@@ -1,4 +1,4 @@
-import type { Timeframe, Currency, StockQuote } from './types';
+import type { Timeframe, StockQuote } from './types';
 
 // API configuration
 export const ALPHA_VANTAGE_BASE_URL = 'https://www.alphavantage.co/query';
@@ -29,15 +29,6 @@ export const TIMEFRAMES: Timeframe[] = [
   { label: '1Y', value: '1year', interval: '1day', outputsize: 365 },
   { label: '5Y', value: '5year', interval: '1week', outputsize: 260 },
   { label: 'ALL', value: 'all', interval: '1month', outputsize: 500 },
-];
-
-// Currencies
-export const CURRENCIES: { value: Currency; label: string; symbol: string }[] = [
-  { value: 'USD', label: 'US Dollar', symbol: '$' },
-  { value: 'EUR', label: 'Euro', symbol: '€' },
-  { value: 'GBP', label: 'British Pound', symbol: '£' },
-  { value: 'CAD', label: 'Canadian Dollar', symbol: 'C$' },
-  { value: 'AUD', label: 'Australian Dollar', symbol: 'A$' },
 ];
 
 // Technical analysis defaults

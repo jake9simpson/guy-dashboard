@@ -1,7 +1,7 @@
 'use client';
 
 import { usePriceStore } from '@/stores/price-store';
-import { formatCurrency, priceToGrams, priceToKg } from '@/lib/utils';
+import { formatPrice, priceToGrams, priceToKg } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 
 interface UnitConverterProps {
@@ -11,7 +11,6 @@ interface UnitConverterProps {
 export function UnitConverter({ className }: UnitConverterProps) {
   const gold = usePriceStore((s) => s.gold);
   const silver = usePriceStore((s) => s.silver);
-  const currency = usePriceStore((s) => s.currency);
 
   const metals = [
     { name: 'Gold', price: gold?.price ?? 0 },
@@ -35,15 +34,15 @@ export function UnitConverter({ className }: UnitConverterProps) {
             <div className="grid grid-cols-3 gap-3">
               <UnitCell
                 label="Troy Oz"
-                value={formatCurrency(metal.price, currency)}
+                value={`$${formatPrice(metal.price)}`}
               />
               <UnitCell
                 label="Gram"
-                value={formatCurrency(priceToGrams(metal.price), currency)}
+                value={`$${formatPrice(priceToGrams(metal.price))}`}
               />
               <UnitCell
                 label="Kilogram"
-                value={formatCurrency(priceToKg(metal.price), currency)}
+                value={`$${formatPrice(priceToKg(metal.price))}`}
               />
             </div>
           </div>

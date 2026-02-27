@@ -5,7 +5,6 @@ import { cn } from '@/lib/utils';
 interface PriceChangeProps {
   value: number;
   percentChange: number;
-  currencySymbol?: string;
   size?: 'sm' | 'md' | 'lg';
   showArrow?: boolean;
   className?: string;
@@ -14,7 +13,6 @@ interface PriceChangeProps {
 export function PriceChange({
   value,
   percentChange,
-  currencySymbol = '$',
   size = 'md',
   showArrow = true,
   className,
@@ -34,7 +32,7 @@ export function PriceChange({
     <span className={cn('inline-flex items-center gap-1 font-mono font-medium', color, sizeClasses[size], className)}>
       {showArrow && <span className="text-[0.7em]">{arrow}</span>}
       <span>
-        {sign}{currencySymbol}{Math.abs(value).toFixed(2)}
+        {sign}${Math.abs(value).toFixed(2)}
       </span>
       <span className="opacity-80">
         ({sign}{percentChange.toFixed(2)}%)

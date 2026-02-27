@@ -2,9 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { usePriceStore } from '@/stores/price-store';
-import { formatCurrency } from '@/lib/utils';
+import { formatPrice } from '@/lib/utils';
 import { PriceChange } from '@/components/common/price-change';
-import { CURRENCIES } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import type { Price } from '@/lib/types';
 
@@ -15,13 +14,9 @@ interface LivePriceCardProps {
 
 export function LivePriceCard({ metal, className }: LivePriceCardProps) {
   const price = usePriceStore((s) => (metal === 'gold' ? s.gold : s.silver));
-  const currency = usePriceStore((s) => s.currency);
   const connected = usePriceStore((s) => s.connected);
   const [flashClass, setFlashClass] = useState('');
   const prevPrice = useRef<number | null>(null);
-
-  const currencyInfo = CURRENCIES.find((c) => c.value === currency);
-  const currencySymbol = currencyInfo?.symbol ?? '$';
 
   // Flash on price change
   useEffect(() => {
@@ -74,7 +69,7 @@ export function LivePriceCard({ metal, className }: LivePriceCardProps) {
       <div className="mb-3">
         {price ? (
           <p className="font-mono text-4xl font-bold text-text-primary tracking-tight">
-            {formatCurrency(price.price, currency)}
+            ${formatPrice(price.price)}
           </p>
         ) : (
           <div className="h-10 w-48 rounded bg-surface-elevated animate-pulse" />
@@ -87,7 +82,6 @@ export function LivePriceCard({ metal, className }: LivePriceCardProps) {
           <PriceChange
             value={price.change}
             percentChange={price.changePercent}
-            currencySymbol={currencySymbol}
             size="md"
           />
         ) : (
@@ -103,7 +97,7 @@ export function LivePriceCard({ metal, className }: LivePriceCardProps) {
           </p>
           {price ? (
             <p className="font-mono text-sm font-semibold text-text-primary">
-              {formatCurrency(price.high, currency)}
+              ${formatPrice(price.high)}
             </p>
           ) : (
             <div className="h-4 w-20 rounded bg-surface-elevated animate-pulse" />
@@ -115,7 +109,7 @@ export function LivePriceCard({ metal, className }: LivePriceCardProps) {
           </p>
           {price ? (
             <p className="font-mono text-sm font-semibold text-text-primary">
-              {formatCurrency(price.low, currency)}
+              ${formatPrice(price.low)}
             </p>
           ) : (
             <div className="h-4 w-20 rounded bg-surface-elevated animate-pulse" />

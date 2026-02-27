@@ -10,18 +10,18 @@ function mapSymbol(symbol: string): string {
   return symbol;
 }
 
-// Map our interval strings to Yahoo interval + range params
-function mapIntervalAndRange(interval: string, outputsize: number): { yahooInterval: string; range: string } {
-  switch (interval) {
-    case '1min':  return { yahooInterval: '1m', range: '1d' };
-    case '5min':  return { yahooInterval: '5m', range: '1d' };
-    case '15min': return { yahooInterval: '15m', range: '5d' };
-    case '30min': return { yahooInterval: '30m', range: '5d' };
-    case '1h':    return { yahooInterval: '60m', range: '1mo' };
-    case '1day':  return { yahooInterval: '1d', range: outputsize > 365 ? '5y' : outputsize > 180 ? '2y' : outputsize > 90 ? '1y' : '6mo' };
-    case '1week': return { yahooInterval: '1wk', range: '5y' };
-    case '1month': return { yahooInterval: '1mo', range: 'max' };
-    default:      return { yahooInterval: '1d', range: '6mo' };
+// Map timeframe value directly to Yahoo interval + range
+function mapIntervalAndRange(timeframeValue: string): { yahooInterval: string; range: string } {
+  switch (timeframeValue) {
+    case '1day':   return { yahooInterval: '5m',  range: '1d' };
+    case '1week':  return { yahooInterval: '15m', range: '5d' };
+    case '1month': return { yahooInterval: '60m', range: '1mo' };
+    case '3month': return { yahooInterval: '1d',  range: '3mo' };
+    case '6month': return { yahooInterval: '1d',  range: '6mo' };
+    case '1year':  return { yahooInterval: '1d',  range: '1y' };
+    case '5year':  return { yahooInterval: '1wk', range: '5y' };
+    case 'all':    return { yahooInterval: '1mo', range: 'max' };
+    default:       return { yahooInterval: '1d',  range: '6mo' };
   }
 }
 
@@ -111,14 +111,17 @@ export async function getQuote(symbol: string): Promise<TwelveDataQuote> {
 export async function getTimeSeries(
   symbol: string,
   interval: string,
-  outputsize: number
+  outputsize: number,
+  timeframeValue: string = ''
 ): Promise<TwelveDataTimeSeries> {
-  const cacheKey = `ts:${symbol}:${interval}:${outputsize}`;
+  const cacheKey = `ts:${symbol}:${timeframeValue || interval}`;
   const cached = getCached<TwelveDataTimeSeries>(cacheKey);
   if (cached) return cached;
 
   const yahooSymbol = mapSymbol(symbol);
-  const { yahooInterval, range } = mapIntervalAndRange(interval, outputsize);
+  const { yahooInterval, range } = timeframeValue
+    ? mapIntervalAndRange(timeframeValue)
+    : mapIntervalAndRange(interval); // fallback for any callers without timeframe
   const chart = await fetchYahoo(yahooSymbol, yahooInterval, range);
 
   const q = chart.indicators.quote[0];
@@ -140,8 +143,7 @@ export async function getTimeSeries(
         volume: String(q.volume[i] ?? 0),
       };
     })
-    .filter((v): v is NonNullable<typeof v> => v !== null)
-    .slice(-outputsize);
+    .filter((v): v is NonNullable<typeof v> => v !== null);
 
   const base = symbol.split('/')[0];
   const result: TwelveDataTimeSeries = {

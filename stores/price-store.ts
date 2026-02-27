@@ -1,14 +1,11 @@
 import { create } from 'zustand';
-import type { Price, Currency, PriceState } from '@/lib/types';
+import type { Price, PriceState } from '@/lib/types';
 
 export const usePriceStore = create<PriceState>((set, get) => ({
   gold: null,
   silver: null,
   ratio: null,
   connected: false,
-  currency: 'USD',
-
-  setCurrency: (currency: Currency) => set({ currency }),
 
   updateGold: (update: Partial<Price>) =>
     set((state) => {

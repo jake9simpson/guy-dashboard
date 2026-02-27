@@ -8,12 +8,14 @@ import type { OHLCV, TwelveDataTimeSeries } from '@/lib/types';
 async function fetchHistoricalData(
   symbol: string,
   interval: string,
-  outputsize: number
+  outputsize: number,
+  timeframe: string
 ): Promise<OHLCV[]> {
   const params = new URLSearchParams({
     symbol,
     interval,
     outputsize: String(outputsize),
+    timeframe,
   });
 
   const res = await fetch(`/api/metals/historical?${params}`);
@@ -42,8 +44,8 @@ export function useHistoricalData(symbol: string, timeframeValue: string) {
   const timeframe = TIMEFRAMES.find((t) => t.value === timeframeValue) ?? TIMEFRAMES[0];
 
   return useQuery({
-    queryKey: ['historical', symbol, timeframe.interval, timeframe.outputsize],
-    queryFn: () => fetchHistoricalData(symbol, timeframe.interval, timeframe.outputsize),
+    queryKey: ['historical', symbol, timeframe.value],
+    queryFn: () => fetchHistoricalData(symbol, timeframe.interval, timeframe.outputsize, timeframe.value),
     staleTime: getTimeframeStaleTime(timeframe.interval),
     gcTime: 10 * 60 * 1000,
     refetchOnWindowFocus: false,
