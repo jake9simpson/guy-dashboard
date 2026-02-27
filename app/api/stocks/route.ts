@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(quotes, {
       headers: {
-        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
       },
     });
   } catch (err) {

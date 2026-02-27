@@ -22,6 +22,7 @@ interface AlpacaSnapshot {
 
 async function fetchAlpaca<T>(path: string): Promise<T> {
   const res = await fetch(`${ALPACA_DATA_BASE_URL}${path}`, {
+    cache: 'no-store',
     headers: {
       'APCA-API-KEY-ID': API_KEY,
       'APCA-API-SECRET-KEY': API_SECRET,
