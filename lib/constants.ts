@@ -22,12 +22,12 @@ export const MINING_STOCKS = [
 
 // Timeframes for chart
 export const TIMEFRAMES: Timeframe[] = [
-  { label: '1D', value: '1day', interval: '5min', outputsize: 78 },
-  { label: '1W', value: '1week', interval: '15min', outputsize: 130 },
-  { label: '1M', value: '1month', interval: '1h', outputsize: 160 },
-  { label: '3M', value: '3month', interval: '1day', outputsize: 65 },
-  { label: '6M', value: '6month', interval: '1day', outputsize: 130 },
-  { label: '1Y', value: '1year', interval: '1day', outputsize: 252 },
+  { label: '1D', value: '1day', interval: '5min', outputsize: 200 },
+  { label: '1W', value: '1week', interval: '15min', outputsize: 250 },
+  { label: '1M', value: '1month', interval: '1h', outputsize: 250 },
+  { label: '3M', value: '3month', interval: '1day', outputsize: 250 },
+  { label: '6M', value: '6month', interval: '1day', outputsize: 250 },
+  { label: '1Y', value: '1year', interval: '1day', outputsize: 365 },
   { label: '5Y', value: '5year', interval: '1week', outputsize: 260 },
   { label: 'ALL', value: 'all', interval: '1month', outputsize: 500 },
 ];

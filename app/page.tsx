@@ -117,7 +117,7 @@ export default function Dashboard() {
     if (!activeIndicators || !activeData?.length) return [];
     const currentPrice = activeData[activeData.length - 1].close;
     return activeIndicators.sma
-      .filter((s) => SMA_PERIODS.includes(s.period as typeof SMA_PERIODS[number]))
+      .filter((s) => SMA_PERIODS.includes(s.period as typeof SMA_PERIODS[number]) && s.currentValue > 0)
       .map((s) => ({
         period: s.period,
         value: s.currentValue,

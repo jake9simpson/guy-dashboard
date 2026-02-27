@@ -1,9 +1,6 @@
 @import "tailwindcss";
 
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
-}
+/* JetBrains Mono loaded via next/font/google in layout.tsx */
 
 :root {
   --background: #FAFAF8;
