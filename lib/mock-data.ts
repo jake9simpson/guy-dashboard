@@ -87,7 +87,7 @@ export const MOCK_MINING_STOCKS: StockQuote[] = [
   { symbol: 'GDX', name: 'VanEck Gold Miners ETF', price: 42.30, change: 0.50, changePercent: 1.20, open: 41.90, high: 42.55, low: 41.75, volume: 12500000, previousClose: 41.80 },
   { symbol: 'GDXJ', name: 'VanEck Junior Gold Miners ETF', price: 52.18, change: 0.82, changePercent: 1.60, open: 51.50, high: 52.40, low: 51.30, volume: 5200000, previousClose: 51.36 },
   { symbol: 'NEM', name: 'Newmont Corporation', price: 58.12, change: 0.45, changePercent: 0.78, open: 57.80, high: 58.35, low: 57.60, volume: 8700000, previousClose: 57.67 },
-  { symbol: 'GOLD', name: 'Barrick Gold', price: 21.45, change: -0.06, changePercent: -0.28, open: 21.55, high: 21.68, low: 21.35, volume: 9100000, previousClose: 21.51 },
+  { symbol: 'B', name: 'Barrick Mining', price: 50.52, change: 0.59, changePercent: 1.18, open: 50.93, high: 51.02, low: 50.26, volume: 9100000, previousClose: 49.93 },
   { symbol: 'AEM', name: 'Agnico Eagle Mines', price: 87.92, change: 1.15, changePercent: 1.33, open: 87.00, high: 88.10, low: 86.85, volume: 3400000, previousClose: 86.77 },
   { symbol: 'WPM', name: 'Wheaton Precious Metals', price: 63.78, change: 0.92, changePercent: 1.46, open: 63.00, high: 64.05, low: 62.80, volume: 2800000, previousClose: 62.86 },
 ];

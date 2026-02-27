@@ -12,7 +12,7 @@ export const MINING_STOCKS = [
   { symbol: 'GDX', name: 'VanEck Gold Miners ETF' },
   { symbol: 'GDXJ', name: 'VanEck Junior Gold Miners ETF' },
   { symbol: 'NEM', name: 'Newmont Corporation' },
-  { symbol: 'GOLD', name: 'Barrick Gold' },
+  { symbol: 'B', name: 'Barrick Mining' },
   { symbol: 'AEM', name: 'Agnico Eagle Mines' },
   { symbol: 'WPM', name: 'Wheaton Precious Metals' },
 ] as const;
