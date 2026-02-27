@@ -1,0 +1,6 @@
+[     321ms] [ERROR] Failed to load resource: the server responded with a status of 502 () @ https://guydashboard.vercel.app/api/metals/quote?symbol=XAU%2FUSD:0
+[     321ms] [ERROR] Failed to fetch gold price: Error: Quote fetch failed: 502
+    at E8 (https://guydashboard.vercel.app/_next/static/chunks/141ba21595d66ddc.js:1:626359) @ https://guydashboard.vercel.app/_next/static/chunks/141ba21595d66ddc.js:1
+[     428ms] [ERROR] Failed to load resource: the server responded with a status of 502 () @ https://guydashboard.vercel.app/api/metals/historical?symbol=XAU%2FUSD&interval=1day&outputsize=250:0
+[    1634ms] [ERROR] Failed to load resource: the server responded with a status of 502 () @ https://guydashboard.vercel.app/api/metals/historical?symbol=XAU%2FUSD&interval=1day&outputsize=250:0
+[    4398ms] [ERROR] Failed to load resource: the server responded with a status of 502 () @ https://guydashboard.vercel.app/api/metals/historical?symbol=XAU%2FUSD&interval=1day&outputsize=250:0

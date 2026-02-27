@@ -23,38 +23,38 @@ export function useLivePrice() {
   // Fetch initial REST quotes on mount
   useEffect(() => {
     async function loadInitialPrices() {
-      try {
-        const [goldQuote, silverQuote] = await Promise.all([
-          fetchQuote(GOLD_SYMBOL),
-          fetchQuote(SILVER_SYMBOL),
-        ]);
+      // Fetch independently so one failure doesn't block the other
+      fetchQuote(GOLD_SYMBOL)
+        .then((q) => {
+          updateGold({
+            symbol: GOLD_SYMBOL,
+            price: parseFloat(q.close),
+            change: parseFloat(q.change),
+            changePercent: parseFloat(q.percent_change),
+            high: parseFloat(q.high),
+            low: parseFloat(q.low),
+            open: parseFloat(q.open),
+            previousClose: parseFloat(q.previous_close),
+            timestamp: Date.now(),
+          });
+        })
+        .catch((err) => console.error('Failed to fetch gold price:', err));
 
-        updateGold({
-          symbol: GOLD_SYMBOL,
-          price: parseFloat(goldQuote.close),
-          change: parseFloat(goldQuote.change),
-          changePercent: parseFloat(goldQuote.percent_change),
-          high: parseFloat(goldQuote.high),
-          low: parseFloat(goldQuote.low),
-          open: parseFloat(goldQuote.open),
-          previousClose: parseFloat(goldQuote.previous_close),
-          timestamp: Date.now(),
-        });
-
-        updateSilver({
-          symbol: SILVER_SYMBOL,
-          price: parseFloat(silverQuote.close),
-          change: parseFloat(silverQuote.change),
-          changePercent: parseFloat(silverQuote.percent_change),
-          high: parseFloat(silverQuote.high),
-          low: parseFloat(silverQuote.low),
-          open: parseFloat(silverQuote.open),
-          previousClose: parseFloat(silverQuote.previous_close),
-          timestamp: Date.now(),
-        });
-      } catch (err) {
-        console.error('Failed to fetch initial prices:', err);
-      }
+      fetchQuote(SILVER_SYMBOL)
+        .then((q) => {
+          updateSilver({
+            symbol: SILVER_SYMBOL,
+            price: parseFloat(q.close),
+            change: parseFloat(q.change),
+            changePercent: parseFloat(q.percent_change),
+            high: parseFloat(q.high),
+            low: parseFloat(q.low),
+            open: parseFloat(q.open),
+            previousClose: parseFloat(q.previous_close),
+            timestamp: Date.now(),
+          });
+        })
+        .catch((err) => console.error('Failed to fetch silver price:', err));
     }
 
     loadInitialPrices();

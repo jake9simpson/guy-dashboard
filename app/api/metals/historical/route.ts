@@ -47,6 +47,24 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (err) {
+    // Silver (XAG/USD) requires a paid Twelve Data plan — fall back to mock
+    if (symbol.includes('XAG')) {
+      const days = parseInt(outputsize, 10);
+      const data = generateMockSilverData(days);
+      const values = data.map((d) => ({
+        datetime: new Date(d.time * 1000).toISOString().replace('T', ' ').slice(0, 19),
+        open: d.open.toString(),
+        high: d.high.toString(),
+        low: d.low.toString(),
+        close: d.close.toString(),
+        volume: d.volume.toString(),
+      }));
+      return NextResponse.json({
+        meta: { symbol, interval, currency_base: 'XAG', currency_quote: 'USD', type: 'Physical Currency' },
+        values,
+        status: 'ok',
+      });
+    }
     const message = err instanceof Error ? err.message : 'Failed to fetch historical data';
     return NextResponse.json({ error: message }, { status: 502 });
   }

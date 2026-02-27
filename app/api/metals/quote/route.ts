@@ -23,6 +23,10 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (err) {
+    // Silver (XAG/USD) requires a paid Twelve Data plan — fall back to mock
+    if (symbol.includes('XAG')) {
+      return NextResponse.json(MOCK_SILVER_QUOTE);
+    }
     const message = err instanceof Error ? err.message : 'Failed to fetch quote';
     return NextResponse.json({ error: message }, { status: 502 });
   }
