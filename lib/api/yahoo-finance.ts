@@ -10,8 +10,16 @@ function mapSymbol(symbol: string): string {
   return symbol;
 }
 
-// Map timeframe value directly to Yahoo interval + range
-function mapIntervalAndRange(timeframeValue: string): { yahooInterval: string; range: string } {
+// Map timeframe value directly to Yahoo interval + range/period params
+// Yahoo ignores interval=1d with range=max, so 'all' uses period1/period2 instead
+interface YahooTimeConfig {
+  yahooInterval: string;
+  range?: string;
+  period1?: number;
+  period2?: number;
+}
+
+function mapIntervalAndRange(timeframeValue: string): YahooTimeConfig {
   switch (timeframeValue) {
     case '1day':   return { yahooInterval: '5m',  range: '1d' };
     case '1week':  return { yahooInterval: '15m', range: '5d' };
@@ -20,7 +28,11 @@ function mapIntervalAndRange(timeframeValue: string): { yahooInterval: string; r
     case '6month': return { yahooInterval: '1d',  range: '6mo' };
     case '1year':  return { yahooInterval: '1d',  range: '1y' };
     case '5year':  return { yahooInterval: '1wk', range: '5y' };
-    case 'all':    return { yahooInterval: '1d',  range: 'max' };
+    case 'all':    return {
+      yahooInterval: '1d',
+      period1: Math.floor(new Date(2000, 0, 1).getTime() / 1000),
+      period2: Math.floor(Date.now() / 1000),
+    };
     default:       return { yahooInterval: '1d',  range: '6mo' };
   }
 }
@@ -46,8 +58,15 @@ interface YahooChartResult {
   };
 }
 
-async function fetchYahoo(yahooSymbol: string, interval: string, range: string): Promise<YahooChartResult> {
-  const url = `${YAHOO_BASE}/${encodeURIComponent(yahooSymbol)}?interval=${interval}&range=${range}`;
+async function fetchYahoo(yahooSymbol: string, config: YahooTimeConfig): Promise<YahooChartResult> {
+  const params = new URLSearchParams({ interval: config.yahooInterval });
+  if (config.period1 != null && config.period2 != null) {
+    params.set('period1', String(config.period1));
+    params.set('period2', String(config.period2));
+  } else if (config.range) {
+    params.set('range', config.range);
+  }
+  const url = `${YAHOO_BASE}/${encodeURIComponent(yahooSymbol)}?${params}`;
   const res = await fetch(url, {
     headers: { 'User-Agent': 'Mozilla/5.0' },
   });
@@ -72,7 +91,7 @@ export async function getQuote(symbol: string): Promise<Quote> {
 
   const yahooSymbol = mapSymbol(symbol);
   // Fetch 2 days of daily data so we get today's candle + yesterday's close
-  const chart = await fetchYahoo(yahooSymbol, '1d', '5d');
+  const chart = await fetchYahoo(yahooSymbol, { yahooInterval: '1d', range: '5d' });
 
   const meta = chart.meta;
   const q = chart.indicators.quote[0];
@@ -119,10 +138,10 @@ export async function getTimeSeries(
   if (cached) return cached;
 
   const yahooSymbol = mapSymbol(symbol);
-  const { yahooInterval, range } = timeframeValue
+  const config = timeframeValue
     ? mapIntervalAndRange(timeframeValue)
     : mapIntervalAndRange(interval); // fallback for any callers without timeframe
-  const chart = await fetchYahoo(yahooSymbol, yahooInterval, range);
+  const chart = await fetchYahoo(yahooSymbol, config);
 
   const q = chart.indicators.quote[0];
 
