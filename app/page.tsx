@@ -71,25 +71,39 @@ export default function Dashboard() {
     ];
   }, [showBMSB, activeData]);
 
-  // Transform OHLCV to chart formats
+  // Live price for the active chart view
+  const livePrice = chartView === 'silver' ? silver?.price : gold?.price;
+
+  // Transform OHLCV to chart formats, patching last bar with live price
   const candlestickData: CandlestickData[] | undefined = useMemo(() => {
     if (!activeData) return undefined;
-    return activeData.map((d) => ({
+    const bars = activeData.map((d) => ({
       time: new Date(d.time * 1000).toISOString().split('T')[0],
       open: d.open,
       high: d.high,
       low: d.low,
       close: d.close,
     }));
-  }, [activeData]);
+    if (livePrice && bars.length > 0) {
+      const last = bars[bars.length - 1];
+      last.close = livePrice;
+      if (livePrice > last.high) last.high = livePrice;
+      if (livePrice < last.low) last.low = livePrice;
+    }
+    return bars;
+  }, [activeData, livePrice]);
 
   const lineData: LineData[] | undefined = useMemo(() => {
     if (!activeData) return undefined;
-    return activeData.map((d) => ({
+    const points = activeData.map((d) => ({
       time: new Date(d.time * 1000).toISOString().split('T')[0],
       value: d.close,
     }));
-  }, [activeData]);
+    if (livePrice && points.length > 0) {
+      points[points.length - 1].value = livePrice;
+    }
+    return points;
+  }, [activeData, livePrice]);
 
   // Build ratio chart data
   const ratioData: LineData[] | undefined = useMemo(() => {
