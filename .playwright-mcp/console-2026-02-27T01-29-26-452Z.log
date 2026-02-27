@@ -1,0 +1,26 @@
+[     223ms] [WARNING] Missing NEXT_PUBLIC_TWELVE_DATA_API_KEY — WebSocket disabled @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[     301ms] [WARNING] Failed to decode downloaded font: https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap @ http://localhost:3000/:0
+[     301ms] [WARNING] OTS parsing error: invalid sfntVersion: 791289955 @ http://localhost:3000/:0
+[     574ms] [ERROR] Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://localhost:3000/api/metals/quote?symbol=XAG%2FUSD:0
+[     574ms] [ERROR] Failed to fetch initial prices: Error: Quote fetch failed: 502
+    at fetchQuote (http://localhost:3000/_next/static/chunks/Projects_guy_dashboard_e2c655ee._.js:4084:24)
+    at async Promise.all (index 1)
+    at async loadInitialPrices (http://localhost:3000/_next/static/chunks/Projects_guy_dashboard_e2c655ee._.js:4110:54) @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:3127
+[     577ms] [ERROR] Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://localhost:3000/api/metals/historical?symbol=XAU%2FUSD&interval=1day&outputsize=65:0
+[     579ms] [ERROR] Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://localhost:3000/api/metals/quote?symbol=XAU%2FUSD:0
+[     580ms] [ERROR] Failed to load resource: the server responded with a status of 502 (Bad Gateway) @ http://localhost:3000/api/metals/historical?symbol=XAG%2FUSD&interval=1day&outputsize=65:0
+[    1339ms] TypeError: stocks?.map is not a function
+    at MinersGrid (http://localhost:3000/_next/static/chunks/Projects_guy_dashboard_e2c655ee._.js:3879:41)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:14826:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:4651:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:6112:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:6708:24)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:965:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:9562:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:9456:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:9440:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:9105:47)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:10238:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:10154:316)
+    at processRootScheduleInMicrotask (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:10175:106)
+    at http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:10249:158

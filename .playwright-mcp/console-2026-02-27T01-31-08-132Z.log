@@ -1,0 +1,149 @@
+[      58ms] [WARNING] Failed to decode downloaded font: https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap @ http://localhost:3000/:0
+[      58ms] [WARNING] OTS parsing error: invalid sfntVersion: 791289955 @ http://localhost:3000/:0
+[     149ms] [WARNING] Missing NEXT_PUBLIC_TWELVE_DATA_API_KEY — WebSocket disabled @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[     167ms] TypeError: stocks?.map is not a function
+    at MinersGrid (http://localhost:3000/_next/static/chunks/Projects_guy_dashboard_e2c655ee._.js:3879:41)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:14826:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:4651:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:6112:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:6708:24)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:965:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:9562:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:9456:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:9440:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:9105:47)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:10238:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:10154:316)
+    at processRootScheduleInMicrotask (http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:10175:106)
+    at http://localhost:3000/_next/static/chunks/0683d_next_dist_compiled_react-dom_00f394b8._.js:10249:158
+[   18283ms] [WARNING] Failed to decode downloaded font: https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap @ http://localhost:3000/:0
+[   18283ms] [WARNING] OTS parsing error: invalid sfntVersion: 791289955 @ http://localhost:3000/:0
+[   18367ms] [WARNING] Missing NEXT_PUBLIC_TWELVE_DATA_API_KEY — WebSocket disabled @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   18402ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   18402ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   18403ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   18403ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   18404ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   18404ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   18405ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   18406ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   18406ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   18406ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   18407ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   18407ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   18407ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   18408ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   18431ms] [WARNING] Failed to decode downloaded font: https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap @ http://localhost:3000/_next/static/chunks/Projects_guy_dashboard_e2c655ee._.js:1276
+[   18432ms] [WARNING] OTS parsing error: invalid sfntVersion: 791289955 @ http://localhost:3000/_next/static/chunks/Projects_guy_dashboard_e2c655ee._.js:1276
+[   26199ms] [WARNING] Failed to decode downloaded font: https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap @ http://localhost:3000/:0
+[   26199ms] [WARNING] OTS parsing error: invalid sfntVersion: 791289955 @ http://localhost:3000/:0
+[   26211ms] [WARNING] Failed to decode downloaded font: https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap @ http://localhost:3000/:0
+[   26211ms] [WARNING] OTS parsing error: invalid sfntVersion: 791289955 @ http://localhost:3000/:0
+[   56526ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=CAPvO59RKkfDhqOadtgCn' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/0683d_next_dist_client_132c2c90._.js:10878
+[   57528ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=CAPvO59RKkfDhqOadtgCn' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/0683d_next_dist_client_132c2c90._.js:10878
+[   58530ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=CAPvO59RKkfDhqOadtgCn' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/0683d_next_dist_client_132c2c90._.js:10878
+[   59532ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=CAPvO59RKkfDhqOadtgCn' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/0683d_next_dist_client_132c2c90._.js:10878
+[   60534ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=CAPvO59RKkfDhqOadtgCn' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/0683d_next_dist_client_132c2c90._.js:10878
+[   65537ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=CAPvO59RKkfDhqOadtgCn' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/0683d_next_dist_client_132c2c90._.js:10878
+[   70538ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=CAPvO59RKkfDhqOadtgCn' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/0683d_next_dist_client_132c2c90._.js:10878
+[   75539ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=CAPvO59RKkfDhqOadtgCn' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/0683d_next_dist_client_132c2c90._.js:10878
+[   80542ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=CAPvO59RKkfDhqOadtgCn' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/0683d_next_dist_client_132c2c90._.js:10878
+[   88112ms] [WARNING] Missing NEXT_PUBLIC_TWELVE_DATA_API_KEY — WebSocket disabled @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   88299ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   88299ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   88300ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   88300ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   88300ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   88300ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   88302ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   88302ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   88303ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   88303ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   88303ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   88304ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   88304ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297
+[   88304ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:3000/_next/static/chunks/0683d_next_dist_25d42c09._.js:2297

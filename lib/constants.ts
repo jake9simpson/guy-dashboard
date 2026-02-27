@@ -4,6 +4,7 @@ import type { Timeframe, Currency, StockQuote } from './types';
 export const TWELVE_DATA_BASE_URL = 'https://api.twelvedata.com';
 export const TWELVE_DATA_WS_URL = 'wss://ws.twelvedata.com/v1/quotes/price';
 export const ALPHA_VANTAGE_BASE_URL = 'https://www.alphavantage.co/query';
+export const ALPACA_DATA_BASE_URL = 'https://data.alpaca.markets/v2';
 export const METALS_DEV_BASE_URL = 'https://api.metals.dev/v1';
 
 // Symbols

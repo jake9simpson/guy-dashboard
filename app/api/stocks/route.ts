@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getBatchQuotes, getQuote } from '@/lib/api/alpha-vantage';
+import { getBatchQuotes, getQuote } from '@/lib/api/alpaca';
 import { MINING_STOCKS } from '@/lib/constants';
-import { isDemoMode, MOCK_MINING_STOCKS } from '@/lib/mock-data';
+import { isStocksDemoMode, MOCK_MINING_STOCKS } from '@/lib/mock-data';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     ? symbolsParam.split(',').map((s) => s.trim())
     : MINING_STOCKS.map((s) => s.symbol);
 
-  if (isDemoMode()) {
+  if (isStocksDemoMode()) {
     const filtered = MOCK_MINING_STOCKS.filter((s) => symbols.includes(s.symbol));
     return NextResponse.json(filtered);
   }
