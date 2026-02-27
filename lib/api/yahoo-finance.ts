@@ -20,7 +20,7 @@ function mapIntervalAndRange(timeframeValue: string): { yahooInterval: string; r
     case '6month': return { yahooInterval: '1d',  range: '6mo' };
     case '1year':  return { yahooInterval: '1d',  range: '1y' };
     case '5year':  return { yahooInterval: '1wk', range: '5y' };
-    case 'all':    return { yahooInterval: '1mo', range: 'max' };
+    case 'all':    return { yahooInterval: '1d',  range: 'max' };
     default:       return { yahooInterval: '1d',  range: '6mo' };
   }
 }

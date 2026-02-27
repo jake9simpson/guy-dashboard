@@ -8,6 +8,7 @@ import {
   AreaSeries,
   ColorType,
   CrosshairMode,
+  LineStyle,
   type IChartApi,
   type ISeriesApi,
   type SeriesType,
@@ -16,10 +17,17 @@ import type { CandlestickData, LineData, ChartType } from '@/lib/types';
 import { COLORS } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 
+export interface OverlayLine {
+  data: LineData[];
+  color: string;
+  title: string;
+}
+
 interface MainChartProps {
   candlestickData?: CandlestickData[];
   lineData?: LineData[];
   chartType: ChartType;
+  overlayLines?: OverlayLine[];
   height?: number;
   className?: string;
 }
@@ -28,12 +36,14 @@ export function MainChart({
   candlestickData,
   lineData,
   chartType,
+  overlayLines,
   height = 500,
   className,
 }: MainChartProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const mainSeriesRef = useRef<ISeriesApi<SeriesType> | null>(null);
+  const overlaySeriesRefs = useRef<ISeriesApi<SeriesType>[]>([]);
 
   // Initialize chart
   useEffect(() => {
@@ -108,6 +118,12 @@ export function MainChart({
       mainSeriesRef.current = null;
     }
 
+    // Remove existing overlay series
+    for (const s of overlaySeriesRefs.current) {
+      chart.removeSeries(s);
+    }
+    overlaySeriesRefs.current = [];
+
     if (chartType === 'candlestick' && candlestickData?.length) {
       const series = chart.addSeries(CandlestickSeries, {
         upColor: COLORS.up,
@@ -141,8 +157,24 @@ export function MainChart({
       mainSeriesRef.current = series;
     }
 
+    // Add overlay lines
+    if (overlayLines?.length) {
+      for (const overlay of overlayLines) {
+        const series = chart.addSeries(LineSeries, {
+          color: overlay.color,
+          lineWidth: 2,
+          lineStyle: LineStyle.Dashed,
+          crosshairMarkerRadius: 3,
+          crosshairMarkerBackgroundColor: overlay.color,
+          title: overlay.title,
+        });
+        series.setData(overlay.data);
+        overlaySeriesRefs.current.push(series);
+      }
+    }
+
     chart.timeScale().fitContent();
-  }, [chartType, candlestickData, lineData]);
+  }, [chartType, candlestickData, lineData, overlayLines]);
 
   return (
     <div className={cn('w-full rounded-lg overflow-hidden border border-border bg-surface', className)}>

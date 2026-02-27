@@ -15,7 +15,10 @@ import { MinersGrid } from '@/components/stocks/miners-grid';
 import { useLivePrice } from '@/hooks/use-live-price';
 import { useHistoricalData } from '@/hooks/use-historical-data';
 import { useTechnicalIndicators } from '@/hooks/use-technical-indicators';
+import { computeSMA } from '@/lib/indicators/sma';
+import { computeEMA } from '@/lib/indicators/ema';
 import { GOLD_SYMBOL, SILVER_SYMBOL, SMA_PERIODS } from '@/lib/constants';
+import type { OverlayLine } from '@/components/charts/main-chart';
 import type {
   ChartType,
   ChartView,
@@ -28,9 +31,10 @@ import type {
 export default function Dashboard() {
   const { gold, silver, ratio } = useLivePrice();
 
-  // Chart state — hardcoded to ALL timeframe (monthly bars, full history)
+  // Chart state — hardcoded to ALL timeframe (daily bars, full history)
   const [chartView, setChartView] = useState<ChartView>('gold');
   const [chartType, setChartType] = useState<ChartType>('candlestick');
+  const [showBMSB, setShowBMSB] = useState(false);
 
   // Fetch ALL-time data for charts (monthly bars)
   const { data: goldData, isLoading: goldLoading } = useHistoricalData(GOLD_SYMBOL, 'all');
@@ -47,6 +51,25 @@ export default function Dashboard() {
   const goldIndicators = useTechnicalIndicators(goldData);
   const silverIndicators = useTechnicalIndicators(silverData);
   const activeIndicators = chartView === 'silver' ? silverIndicators : goldIndicators;
+
+  // Bull Market Support Band: 20-week SMA + 21-week EMA (converted to trading days)
+  const bmsbOverlays: OverlayLine[] | undefined = useMemo(() => {
+    if (!showBMSB || !activeData || activeData.length < 105) return undefined;
+    const sma20w = computeSMA(activeData, 100); // 20 weeks * 5 trading days
+    const ema21w = computeEMA(activeData, 105); // 21 weeks * 5 trading days
+    return [
+      {
+        data: sma20w.values.map((v) => ({ time: v.time.slice(0, 10), value: v.value })),
+        color: '#2563EB',
+        title: '20w SMA',
+      },
+      {
+        data: ema21w.values.map((v) => ({ time: v.time.slice(0, 10), value: v.value })),
+        color: '#9333EA',
+        title: '21w EMA',
+      },
+    ];
+  }, [showBMSB, activeData]);
 
   // Transform OHLCV to chart formats
   const candlestickData: CandlestickData[] | undefined = useMemo(() => {
@@ -163,6 +186,8 @@ export default function Dashboard() {
             onChartViewChange={setChartView}
             chartType={chartType}
             onChartTypeChange={setChartType}
+            showBMSB={showBMSB}
+            onBMSBChange={setShowBMSB}
           />
         </section>
 
@@ -183,6 +208,7 @@ export default function Dashboard() {
               candlestickData={chartType === 'candlestick' ? candlestickData : undefined}
               lineData={chartType !== 'candlestick' ? lineData : undefined}
               chartType={chartType}
+              overlayLines={bmsbOverlays}
               height={500}
             />
           )}

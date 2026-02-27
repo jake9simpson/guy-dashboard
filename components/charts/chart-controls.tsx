@@ -9,6 +9,8 @@ interface ChartControlsProps {
   onChartViewChange: (view: ChartView) => void;
   chartType: ChartType;
   onChartTypeChange: (type: ChartType) => void;
+  showBMSB?: boolean;
+  onBMSBChange?: (show: boolean) => void;
   className?: string;
 }
 
@@ -29,6 +31,8 @@ export function ChartControls({
   onChartViewChange,
   chartType,
   onChartTypeChange,
+  showBMSB,
+  onBMSBChange,
   className,
 }: ChartControlsProps) {
   return (
@@ -72,6 +76,22 @@ export function ChartControls({
           );
         })}
       </div>
+
+      {/* BMSB toggle — only for gold/silver views */}
+      {chartView !== 'ratio' && onBMSBChange && (
+        <button
+          onClick={() => onBMSBChange(!showBMSB)}
+          title="Bull Market Support Band (20w SMA + 21w EMA)"
+          className={cn(
+            'rounded-lg px-3 py-1.5 text-xs font-medium transition-colors',
+            showBMSB
+              ? 'bg-gold-primary text-white shadow-sm'
+              : 'bg-surface-elevated text-text-secondary hover:text-text-primary hover:bg-surface'
+          )}
+        >
+          BMSB
+        </button>
+      )}
     </div>
   );
 }
