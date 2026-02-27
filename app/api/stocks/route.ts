@@ -1,0 +1,30 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { getBatchQuotes, getQuote } from '@/lib/api/alpha-vantage';
+import { MINING_STOCKS } from '@/lib/constants';
+
+export async function GET(request: NextRequest) {
+  const { searchParams } = request.nextUrl;
+  const symbolsParam = searchParams.get('symbols');
+
+  const symbols = symbolsParam
+    ? symbolsParam.split(',').map((s) => s.trim())
+    : MINING_STOCKS.map((s) => s.symbol);
+
+  try {
+    let quotes;
+    if (symbols.length === 1) {
+      quotes = [await getQuote(symbols[0])];
+    } else {
+      quotes = await getBatchQuotes(symbols);
+    }
+
+    return NextResponse.json({ quotes }, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+      },
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Failed to fetch stock quotes';
+    return NextResponse.json({ error: message }, { status: 502 });
+  }
+}
