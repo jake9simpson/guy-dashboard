@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getTimeSeries } from '@/lib/api/finnhub';
+import { getTimeSeries } from '@/lib/api/yahoo-finance';
 import { computeSMA } from '@/lib/indicators/sma';
 import { computeEMA } from '@/lib/indicators/ema';
 import { computeRSI } from '@/lib/indicators/rsi';

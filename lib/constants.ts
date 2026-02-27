@@ -1,7 +1,6 @@
 import type { Timeframe, Currency, StockQuote } from './types';
 
 // API configuration
-export const FINNHUB_BASE_URL = 'https://finnhub.io';
 export const ALPHA_VANTAGE_BASE_URL = 'https://www.alphavantage.co/query';
 export const ALPACA_DATA_BASE_URL = 'https://data.alpaca.markets/v2';
 export const METALS_DEV_BASE_URL = 'https://api.metals.dev/v1';

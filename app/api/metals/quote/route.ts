@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getQuote } from '@/lib/api/finnhub';
+import { getQuote } from '@/lib/api/yahoo-finance';
 import { isDemoMode, MOCK_GOLD_QUOTE, MOCK_SILVER_QUOTE } from '@/lib/mock-data';
 
 export async function GET(request: NextRequest) {
