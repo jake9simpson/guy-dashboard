@@ -32,7 +32,6 @@ export default function Dashboard() {
   // Chart state — hardcoded to ALL timeframe (monthly bars, full history)
   const [chartView, setChartView] = useState<ChartView>('gold');
   const [chartType, setChartType] = useState<ChartType>('candlestick');
-  const [activeOverlays, setActiveOverlays] = useState<string[]>([]);
 
   // Fetch ALL-time data for charts (monthly bars)
   const { data: goldData, isLoading: goldLoading } = useHistoricalData(GOLD_SYMBOL, 'all');
@@ -69,27 +68,6 @@ export default function Dashboard() {
       value: d.close,
     }));
   }, [activeData]);
-
-  // Build overlay configs from active overlays + indicators
-  const overlayConfigs = useMemo(() => {
-    if (!activeIndicators) return [];
-    return activeOverlays
-      .map((id) => {
-        if (id.startsWith('sma-')) {
-          const period = parseInt(id.split('-')[1]);
-          const smaData = activeIndicators.sma.find((s) => s.period === period);
-          if (smaData) return { type: 'sma' as const, data: smaData };
-        } else if (id.startsWith('ema-')) {
-          const period = parseInt(id.split('-')[1]);
-          const emaData = activeIndicators.ema.find((e) => e.period === period);
-          if (emaData) return { type: 'ema' as const, data: emaData };
-        } else if (id === 'bollinger') {
-          return { type: 'bollinger' as const, data: activeIndicators.bollinger };
-        }
-        return null;
-      })
-      .filter(Boolean) as { type: 'sma' | 'ema' | 'bollinger'; data: unknown }[];
-  }, [activeOverlays, activeIndicators]);
 
   // Build ratio chart data
   const ratioData: LineData[] | undefined = useMemo(() => {
@@ -186,8 +164,6 @@ export default function Dashboard() {
             onChartViewChange={setChartView}
             chartType={chartType}
             onChartTypeChange={setChartType}
-            activeOverlays={activeOverlays}
-            onOverlaysChange={setActiveOverlays}
           />
         </section>
 
@@ -208,7 +184,6 @@ export default function Dashboard() {
               candlestickData={chartType === 'candlestick' ? candlestickData : undefined}
               lineData={chartType !== 'candlestick' ? lineData : undefined}
               chartType={chartType}
-              overlays={overlayConfigs as never}
               height={500}
             />
           )}

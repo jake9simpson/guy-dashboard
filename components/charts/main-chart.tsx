@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 import {
   createChart,
   CandlestickSeries,
@@ -12,63 +12,28 @@ import {
   type ISeriesApi,
   type SeriesType,
 } from 'lightweight-charts';
-import type {
-  CandlestickData,
-  LineData,
-  ChartType,
-  SMAData,
-  EMAData,
-  BollingerBandsData,
-} from '@/lib/types';
+import type { CandlestickData, LineData, ChartType } from '@/lib/types';
 import { COLORS } from '@/lib/constants';
 import { cn } from '@/lib/utils';
-
-interface OverlayConfig {
-  type: 'sma' | 'ema' | 'bollinger';
-  data: SMAData | EMAData | BollingerBandsData;
-}
 
 interface MainChartProps {
   candlestickData?: CandlestickData[];
   lineData?: LineData[];
   chartType: ChartType;
-  overlays?: OverlayConfig[];
   height?: number;
   className?: string;
 }
-
-const SMA_COLORS: Record<number, string> = {
-  20: '#2563EB',
-  50: '#D97706',
-  100: '#7C3AED',
-  200: '#DC2626',
-};
-
-const EMA_COLORS: Record<number, string> = {
-  12: '#0891B2',
-  26: '#BE185D',
-};
 
 export function MainChart({
   candlestickData,
   lineData,
   chartType,
-  overlays = [],
   height = 500,
   className,
 }: MainChartProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const mainSeriesRef = useRef<ISeriesApi<SeriesType> | null>(null);
-  const overlaySeriesRef = useRef<ISeriesApi<SeriesType>[]>([]);
-
-  const clearOverlays = useCallback(() => {
-    if (!chartRef.current) return;
-    for (const series of overlaySeriesRef.current) {
-      chartRef.current.removeSeries(series);
-    }
-    overlaySeriesRef.current = [];
-  }, []);
 
   // Initialize chart
   useEffect(() => {
@@ -129,7 +94,6 @@ export function MainChart({
       chart.remove();
       chartRef.current = null;
       mainSeriesRef.current = null;
-      overlaySeriesRef.current = [];
     };
   }, [height]);
 
@@ -179,64 +143,6 @@ export function MainChart({
 
     chart.timeScale().fitContent();
   }, [chartType, candlestickData, lineData]);
-
-  // Update overlays
-  useEffect(() => {
-    const chart = chartRef.current;
-    if (!chart) return;
-
-    clearOverlays();
-
-    for (const overlay of overlays) {
-      if (overlay.type === 'sma' || overlay.type === 'ema') {
-        const data = overlay.data as SMAData | EMAData;
-        const colorMap = overlay.type === 'sma' ? SMA_COLORS : EMA_COLORS;
-        const color = colorMap[data.period] ?? '#6366F1';
-        const series = chart.addSeries(LineSeries, {
-          color,
-          lineWidth: 1,
-          priceLineVisible: false,
-          lastValueVisible: false,
-          crosshairMarkerVisible: false,
-        });
-        series.setData(data.values);
-        overlaySeriesRef.current.push(series);
-      } else if (overlay.type === 'bollinger') {
-        const data = overlay.data as BollingerBandsData;
-        const upperSeries = chart.addSeries(LineSeries, {
-          color: 'rgba(99, 102, 241, 0.5)',
-          lineWidth: 1,
-          lineStyle: 2,
-          priceLineVisible: false,
-          lastValueVisible: false,
-          crosshairMarkerVisible: false,
-        });
-        upperSeries.setData(data.upper);
-        overlaySeriesRef.current.push(upperSeries);
-
-        const middleSeries = chart.addSeries(LineSeries, {
-          color: 'rgba(99, 102, 241, 0.8)',
-          lineWidth: 1,
-          priceLineVisible: false,
-          lastValueVisible: false,
-          crosshairMarkerVisible: false,
-        });
-        middleSeries.setData(data.middle);
-        overlaySeriesRef.current.push(middleSeries);
-
-        const lowerSeries = chart.addSeries(LineSeries, {
-          color: 'rgba(99, 102, 241, 0.5)',
-          lineWidth: 1,
-          lineStyle: 2,
-          priceLineVisible: false,
-          lastValueVisible: false,
-          crosshairMarkerVisible: false,
-        });
-        lowerSeries.setData(data.lower);
-        overlaySeriesRef.current.push(lowerSeries);
-      }
-    }
-  }, [overlays, clearOverlays]);
 
   return (
     <div className={cn('w-full rounded-lg overflow-hidden border border-border bg-surface', className)}>
