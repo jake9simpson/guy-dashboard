@@ -11,7 +11,6 @@ import { RatioChart } from '@/components/charts/ratio-chart';
 import { TADashboard } from '@/components/analysis/ta-dashboard';
 import { MovingAveragesTable } from '@/components/analysis/moving-averages-table';
 import { PerformanceTable } from '@/components/analysis/performance-table';
-import { RiskMetrics } from '@/components/analysis/risk-metrics';
 import { MinersGrid } from '@/components/stocks/miners-grid';
 import { useLivePrice } from '@/hooks/use-live-price';
 import { useHistoricalData } from '@/hooks/use-historical-data';
@@ -225,9 +224,9 @@ export default function Dashboard() {
           </section>
         )}
 
-        {/* Performance + Risk side by side */}
-        <section className="grid grid-cols-1 gap-6 lg:grid-cols-2 mb-8">
-          {performanceMetrics.length > 0 && (
+        {/* Performance Comparison */}
+        {performanceMetrics.length > 0 && (
+          <section className="mb-8">
             <PerformanceTable
               metrics={performanceMetrics}
               goldHigh52w={goldYearData?.length ? Math.max(...goldYearData.map((d) => d.high)) : undefined}
@@ -235,17 +234,8 @@ export default function Dashboard() {
               silverHigh52w={silverYearData?.length ? Math.max(...silverYearData.map((d) => d.high)) : undefined}
               silverLow52w={silverYearData?.length ? Math.min(...silverYearData.map((d) => d.low)) : undefined}
             />
-          )}
-
-          {goldIndicators && silverIndicators && (
-            <div>
-              <RiskMetrics
-                gold={goldIndicators.risk}
-                silver={silverIndicators.risk}
-              />
-            </div>
-          )}
-        </section>
+          </section>
+        )}
 
         {/* Unit Converter */}
         <section className="mb-8">
