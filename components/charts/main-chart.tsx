@@ -28,6 +28,7 @@ interface MainChartProps {
   lineData?: LineData[];
   chartType: ChartType;
   overlayLines?: OverlayLine[];
+  livePrice?: number;
   height?: number;
   className?: string;
 }
@@ -37,6 +38,7 @@ export function MainChart({
   lineData,
   chartType,
   overlayLines,
+  livePrice,
   height = 500,
   className,
 }: MainChartProps) {
@@ -182,6 +184,26 @@ export function MainChart({
       to: pad.toISOString().split('T')[0],
     });
   }, [chartType, candlestickData, lineData, overlayLines]);
+
+  // Update last bar in-place with live price (no view reset)
+  useEffect(() => {
+    const series = mainSeriesRef.current;
+    if (!series || !livePrice) return;
+
+    if (chartType === 'candlestick' && candlestickData?.length) {
+      const last = candlestickData[candlestickData.length - 1];
+      series.update({
+        time: last.time,
+        open: last.open,
+        high: Math.max(last.high, livePrice),
+        low: Math.min(last.low, livePrice),
+        close: livePrice,
+      });
+    } else if (lineData?.length) {
+      const last = lineData[lineData.length - 1];
+      series.update({ time: last.time, value: livePrice });
+    }
+  }, [livePrice, chartType, candlestickData, lineData]);
 
   return (
     <div className={cn('w-full rounded-lg overflow-hidden border border-border bg-surface', className)}>

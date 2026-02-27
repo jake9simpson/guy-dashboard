@@ -16,7 +16,6 @@ import { useLivePrice } from '@/hooks/use-live-price';
 import { useHistoricalData } from '@/hooks/use-historical-data';
 import { useTechnicalIndicators } from '@/hooks/use-technical-indicators';
 import { computeSMA } from '@/lib/indicators/sma';
-import { computeEMA } from '@/lib/indicators/ema';
 import { GOLD_SYMBOL, SILVER_SYMBOL, SMA_PERIODS } from '@/lib/constants';
 import type { OverlayLine } from '@/components/charts/main-chart';
 import type {
@@ -34,7 +33,7 @@ export default function Dashboard() {
   // Chart state — hardcoded to ALL timeframe (daily bars, full history)
   const [chartView, setChartView] = useState<ChartView>('gold');
   const [chartType, setChartType] = useState<ChartType>('candlestick');
-  const [showBMSB, setShowBMSB] = useState(false);
+  const [showMAs, setShowMAs] = useState(false);
 
   // Fetch ALL-time data for charts (monthly bars)
   const { data: goldData, isLoading: goldLoading } = useHistoricalData(GOLD_SYMBOL, 'all');
@@ -52,58 +51,47 @@ export default function Dashboard() {
   const silverIndicators = useTechnicalIndicators(silverData);
   const activeIndicators = chartView === 'silver' ? silverIndicators : goldIndicators;
 
-  // Bull Market Support Band: 20-week SMA + 21-week EMA (converted to trading days)
-  const bmsbOverlays: OverlayLine[] | undefined = useMemo(() => {
-    if (!showBMSB || !activeData || activeData.length < 105) return undefined;
-    const sma20w = computeSMA(activeData, 100); // 20 weeks * 5 trading days
-    const ema21w = computeEMA(activeData, 105); // 21 weeks * 5 trading days
+  // 50-day and 200-day SMA overlays on daily chart
+  const maOverlays: OverlayLine[] | undefined = useMemo(() => {
+    if (!showMAs || !activeData || activeData.length < 200) return undefined;
+    const sma50 = computeSMA(activeData, 50);
+    const sma200 = computeSMA(activeData, 200);
     return [
       {
-        data: sma20w.values.map((v) => ({ time: v.time.slice(0, 10), value: v.value })),
+        data: sma50.values.map((v) => ({ time: v.time.slice(0, 10), value: v.value })),
         color: 'rgba(100, 130, 160, 0.6)',
-        title: '20w SMA',
+        title: '50 SMA',
       },
       {
-        data: ema21w.values.map((v) => ({ time: v.time.slice(0, 10), value: v.value })),
+        data: sma200.values.map((v) => ({ time: v.time.slice(0, 10), value: v.value })),
         color: 'rgba(80, 160, 120, 0.6)',
-        title: '21w EMA',
+        title: '200 SMA',
       },
     ];
-  }, [showBMSB, activeData]);
+  }, [showMAs, activeData]);
 
-  // Live price for the active chart view
+  // Live price for the active chart view (passed separately to avoid full re-render)
   const livePrice = chartView === 'silver' ? silver?.price : gold?.price;
 
-  // Transform OHLCV to chart formats, patching last bar with live price
+  // Transform OHLCV to chart formats (stable, only changes when historical data changes)
   const candlestickData: CandlestickData[] | undefined = useMemo(() => {
     if (!activeData) return undefined;
-    const bars = activeData.map((d) => ({
+    return activeData.map((d) => ({
       time: new Date(d.time * 1000).toISOString().split('T')[0],
       open: d.open,
       high: d.high,
       low: d.low,
       close: d.close,
     }));
-    if (livePrice && bars.length > 0) {
-      const last = bars[bars.length - 1];
-      last.close = livePrice;
-      if (livePrice > last.high) last.high = livePrice;
-      if (livePrice < last.low) last.low = livePrice;
-    }
-    return bars;
-  }, [activeData, livePrice]);
+  }, [activeData]);
 
   const lineData: LineData[] | undefined = useMemo(() => {
     if (!activeData) return undefined;
-    const points = activeData.map((d) => ({
+    return activeData.map((d) => ({
       time: new Date(d.time * 1000).toISOString().split('T')[0],
       value: d.close,
     }));
-    if (livePrice && points.length > 0) {
-      points[points.length - 1].value = livePrice;
-    }
-    return points;
-  }, [activeData, livePrice]);
+  }, [activeData]);
 
   // Build ratio chart data
   const ratioData: LineData[] | undefined = useMemo(() => {
@@ -196,7 +184,7 @@ export default function Dashboard() {
         {/* Welcome / How to use */}
         <section className="mb-6 rounded-lg border border-border bg-surface px-5 py-4">
           <p className="text-sm text-text-secondary leading-relaxed">
-            Hey Guy, I made this dashboard for both of us to track gold and silver prices. Use the <strong>Gold</strong> and <strong>Silver</strong> buttons to switch between metals and see the technical analysis below. Hit <strong>Ratio</strong> for the gold/silver ratio. You can pick between candlestick, line, or area chart styles. The <strong>BMSB</strong> button toggles the Bull Market Support Band, which plots the 20-week SMA and 21-week EMA. You can scroll the chart all the way back to 2000.
+            Hey Guy, I made this dashboard for both of us to track gold and silver prices. Use the <strong>Gold</strong> and <strong>Silver</strong> buttons to switch between metals and see the technical analysis below. Hit <strong>Ratio</strong> for the gold/silver ratio. You can pick between candlestick, line, or area chart styles. The <strong>MA</strong> button toggles the 50-day and 200-day simple moving averages on the daily chart. You can scroll the chart all the way back to 2000.
           </p>
         </section>
 
@@ -207,8 +195,8 @@ export default function Dashboard() {
             onChartViewChange={setChartView}
             chartType={chartType}
             onChartTypeChange={setChartType}
-            showBMSB={showBMSB}
-            onBMSBChange={setShowBMSB}
+            showBMSB={showMAs}
+            onBMSBChange={setShowMAs}
           />
         </section>
 
@@ -229,7 +217,8 @@ export default function Dashboard() {
               candlestickData={chartType === 'candlestick' ? candlestickData : undefined}
               lineData={chartType !== 'candlestick' ? lineData : undefined}
               chartType={chartType}
-              overlayLines={bmsbOverlays}
+              overlayLines={maOverlays}
+              livePrice={livePrice}
               height={500}
             />
           )}

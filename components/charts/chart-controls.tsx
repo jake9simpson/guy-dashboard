@@ -77,11 +77,11 @@ export function ChartControls({
         })}
       </div>
 
-      {/* BMSB toggle — only for gold/silver views */}
+      {/* Moving averages toggle — only for gold/silver views */}
       {chartView !== 'ratio' && onBMSBChange && (
         <button
           onClick={() => onBMSBChange(!showBMSB)}
-          title="Bull Market Support Band (20w SMA + 21w EMA)"
+          title="50-day and 200-day SMA"
           className={cn(
             'rounded-lg px-3 py-1.5 text-xs font-medium transition-colors',
             showBMSB
@@ -89,7 +89,7 @@ export function ChartControls({
               : 'bg-surface-elevated text-text-secondary hover:text-text-primary hover:bg-surface'
           )}
         >
-          BMSB
+          MA
         </button>
       )}
     </div>
